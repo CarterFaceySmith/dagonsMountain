@@ -60,6 +60,36 @@ public class dagonsMountain {
 		return enemyHP;
 	}
 
+	public static int enemyBasicAtk(int playerHP, int playerDEF, int playerEVD, int enemyATK, String enemyName, String atkVerb, Random rand){
+		boolean ifDodge = false;
+		
+		if ((playerEVD / rand.nextInt(100)) > enemyATK){
+			ifDodge = true;
+		}
+
+		if (ifDodge == true){
+			System.out.println("\tYou dodged the " + enemyName + "'s attack!\n");
+			return playerHP;
+		}
+
+		else {
+			int dmgVal = enemyATK - (playerDEF / 2);
+			
+			if (dmgVal > 0){
+				playerHP -= dmgVal;
+				System.out.println("\tThe " + enemyName + " " + atkVerb + " you for " + dmgVal + " damage in retaliation!");
+				return playerHP;
+			}
+			
+			else {
+				System.out.println("\tYou defend against the strike! It glances off you dealing no damage.\n");
+				return playerHP;
+			}
+			
+		}
+		
+	}
+
 	public static void main(String[] args) {
 
 		//System objects
@@ -91,6 +121,9 @@ public class dagonsMountain {
 		int[] playerHealth = {50, 100, 70};
 		int[] attackDamage = {10, 40, 25};
 		int[] playerMP = {150, 0, 60};
+		int[] playerEvasionPercent = {15, 5, 30};
+		int[] playerDefencePercent = {15, 25, 5};
+		int[] playerPercepPercent = {35, 15, 20};
 		int playerXP = 0;
 		int playerLevel = 1;
 
@@ -100,6 +133,10 @@ public class dagonsMountain {
 		int currPlayerHealth = playerHealth[1];
 		int currPlayerDamage = attackDamage[1];
 		int currPlayerMP = playerMP[1];
+		int currPlayerEvade = playerEvasionPercent[1];
+		int currPlayerDef = playerDefencePercent[1];
+		int currPlayerPercep = playerPercepPercent[1];
+
 		
 
 		boolean running = true;
@@ -119,6 +156,9 @@ public class dagonsMountain {
 			System.out.println();
 			System.out.println("\tHP: " + playerHealth[0]);
 			System.out.println("\tMP: " + playerMP[0]);
+			System.out.println("\tEvasion: " + playerEvasionPercent[0]);
+			System.out.println("\tDefence: " + playerDefencePercent[0]);
+			System.out.println("\tPerception: " + playerPercepPercent[0]);
 			System.out.println("\tAttack Damage: " + attackDamage[0]);
 			System.out.println();
 			System.out.print("\tAbilities: ");
@@ -138,6 +178,9 @@ public class dagonsMountain {
 			System.out.println();
 			System.out.println("\tHP: " + playerHealth[1]);
 			System.out.println("\tMP: " + playerMP[1]);
+			System.out.println("\tEvasion: " + playerEvasionPercent[1]);
+			System.out.println("\tDefence: " + playerDefencePercent[1]);
+			System.out.println("\tPerception: " + playerPercepPercent[1]);
 			System.out.println("\tAttack Damage: " + attackDamage[1]);
 			System.out.println();
 			System.out.print("\tAbilities: ");
@@ -157,6 +200,9 @@ public class dagonsMountain {
 			System.out.println();
 			System.out.println("\tHP: " + playerHealth[2]);
 			System.out.println("\tMP: " + playerMP[2]);
+			System.out.println("\tEvasion: " + playerEvasionPercent[2]);
+			System.out.println("\tDefence: " + playerDefencePercent[2]);
+			System.out.println("\tPerception: " + playerPercepPercent[2]);
 			System.out.println("\tAttack Damage: " + attackDamage[2]);
 			System.out.println();
 			System.out.print("\tAbilities: ");
@@ -179,6 +225,9 @@ public class dagonsMountain {
 					currPlayerHealth = playerHealth[0];
 					currPlayerDamage = attackDamage[0];
 					currPlayerMP = playerMP[0];
+					currPlayerEvade = playerEvasionPercent[0];
+					currPlayerDef = playerDefencePercent[0];
+					currPlayerPercep = playerPercepPercent[0];
 					System.out.println("\tYou feel the roar of mana surging through your body, your feet lift from the ground as you levitate forth.");
 					System.out.println();
 				}
@@ -188,6 +237,9 @@ public class dagonsMountain {
 					currPlayerHealth = playerHealth[1];
 					currPlayerDamage = attackDamage[1];
 					currPlayerMP = playerMP[1];
+					currPlayerEvade = playerEvasionPercent[1];
+					currPlayerDef = playerDefencePercent[1];
+					currPlayerPercep = playerPercepPercent[1];
 					System.out.println("\tYour body rushes with adrenaline, you rip your sword from the earth as if it weighs nothing and set forth.");
 					System.out.println();
 				}
@@ -197,6 +249,9 @@ public class dagonsMountain {
 					currPlayerHealth = playerHealth[2];
 					currPlayerDamage = attackDamage[2];
 					currPlayerMP = playerMP[2];
+					currPlayerEvade = playerEvasionPercent[2];
+					currPlayerDef = playerDefencePercent[2];
+					currPlayerPercep = playerPercepPercent[2];
 					System.out.println("\tYour eyes flit towards the shadows creeping around you, fingering your dagger you silently move towards the mountain.");
 					System.out.println();
 				}
@@ -209,8 +264,10 @@ public class dagonsMountain {
 			//Initialize enemy
 			int setEnemy = rand.nextInt(enemies.length);
 			String enemy = enemies[setEnemy];
-			int currEnemyHealth = (playerLevel * enemyHealth[setEnemy]);
-			int enemyXP = (int)(rand.nextDouble()*(enemyAttackDamage[setEnemy] + enemyHealth[setEnemy] + enemyMP[setEnemy]) / playerLevel);
+			int currEnemyAttack = enemyAttackDamage[setEnemy];
+			String currEnemyVerb = enemyAttackVerbs[setEnemy];
+			int currEnemyHealth = (int)(rand.nextDouble()* (playerLevel * enemyHealth[setEnemy]));
+			int enemyXP = (int)(rand.nextDouble()*(enemyAttackDamage[setEnemy] + currEnemyHealth + enemyMP[setEnemy]) / playerLevel);
 
 
 			System.out.println("\t# " + enemy + " appeared! #\n");
@@ -239,8 +296,7 @@ public class dagonsMountain {
 						currEnemyHealth -= currPlayerDamage;
 
 						if (currEnemyHealth > 0){
-						System.out.println("\tThe " + enemy + " " + enemyAttackVerbs[setEnemy] + " you for " + enemyAttackDamage[setEnemy] + " damage in retaliation!");
-						currPlayerHealth -= enemyAttackDamage[setEnemy];
+						currPlayerHealth = enemyBasicAtk(currPlayerHealth, currPlayerDef, currPlayerEvade, currEnemyAttack, enemy, currEnemyVerb, rand);
 						System.out.println();
 						}
 					}
@@ -284,11 +340,11 @@ public class dagonsMountain {
 							}
 							
 							if (currEnemyHealth > 0){
-							System.out.println("\tThe " + enemy + " " + enemyAttackVerbs[setEnemy] + " you for " + enemyAttackDamage[setEnemy] + " damage in retaliation!");
-							currPlayerHealth -= enemyAttackDamage[setEnemy];
+							currPlayerHealth = enemyBasicAtk(currPlayerHealth, currPlayerDef, currPlayerEvade, currEnemyAttack, enemy, currEnemyVerb, rand);
 							System.out.println();
 							}
 						}
+					
 
 						if(currPlayerClass.equals("Warrior")){
 
@@ -325,11 +381,10 @@ public class dagonsMountain {
 							}
 							
 							if (currEnemyHealth > 0){
-							System.out.println("\tThe " + enemy + " " + enemyAttackVerbs[setEnemy] + " you for " + enemyAttackDamage[setEnemy] + " damage in retaliation!");
-							currPlayerHealth -= enemyAttackDamage[setEnemy];
-							System.out.println();
-							}
+								currPlayerHealth = enemyBasicAtk(currPlayerHealth, currPlayerDef, currPlayerEvade, currEnemyAttack, enemy, currEnemyVerb, rand);
+								System.out.println();
 
+							}
 						}
 
 						if(currPlayerClass.equals("Assassin")){
@@ -370,14 +425,16 @@ public class dagonsMountain {
 							}
 							
 							if (currEnemyHealth > 0){
-							System.out.println("\tThe " + enemy + " " + enemyAttackVerbs[setEnemy] + " you for " + enemyAttackDamage[setEnemy] + " damage in retaliation!");
-							currPlayerHealth -= enemyAttackDamage[setEnemy];
+							currPlayerHealth = enemyBasicAtk(currPlayerHealth, currPlayerDef, currPlayerEvade, currEnemyAttack, enemy, currEnemyVerb, rand);
 							System.out.println();
-							}
-
-						}
 						
+						}
 					}
+							
+
+						
+						
+					
 
 					if (userInput.equals("3")){
 						System.out.println("\tYou move swiftly, retreating from danger...");
@@ -389,7 +446,7 @@ public class dagonsMountain {
 						System.out.println("\tYou ponder your next move, eyes glancing towards the " + enemy + " before you.\n");
 					}
 			}
-				
+
 				//Loss state
 				if (currPlayerHealth < 1) {
 					System.out.println("\tAs your stamina falters, the " + enemy + " sees it's opportunity and " + enemyAttackVerbs[setEnemy] + " you a final time, dealing a lethal blow.");
@@ -426,6 +483,63 @@ public class dagonsMountain {
 						int levels = playerXP / 100;
 						playerLevel += levels;
 						System.out.println("\tYou feel energy surge through you, you have reached level " + playerLevel + "!\n");
+						int pointsLeftCount = 3;
+
+						LEVELING:
+						while(pointsLeftCount > 0){
+						System.out.println("\tWhich stat will you upgrade?\n");
+						System.out.println("\tPoints left: " + pointsLeftCount + "/3\n");
+						System.out.println("\t0. +5 Health");
+						System.out.println("\t1. +5 Mana");
+						System.out.println("\t2. +2 Attack Damage");
+						System.out.println("\t3. +1 Evasion");
+						System.out.println("\t4. +1 Defence");
+						System.out.println("\t5. +1 Perception");
+
+						userInput = scnr.nextLine();
+						
+						if(userInput.equals("0")){
+							currPlayerHealth += 5;
+							System.out.println("\tHealth increased by 5!\n");
+							pointsLeftCount -= 1;
+							continue LEVELING;
+						}
+
+						if(userInput.equals("1")){
+							currPlayerMP += 5;
+							System.out.println("\tMana increased by 5!\n");
+							pointsLeftCount -= 1;
+							continue LEVELING;
+						}
+
+						if(userInput.equals("2")){
+							currPlayerDamage += 2;
+							System.out.println("\tDamage increased by 2!\n");
+							pointsLeftCount -= 1;
+							continue LEVELING;
+						}
+
+						if(userInput.equals("3")){
+							currPlayerEvade += 1;
+							System.out.println("\tEvasion increased by 5!\n");
+							pointsLeftCount -= 1;
+							continue LEVELING;
+						}
+
+						if(userInput.equals("4")){
+							currPlayerHealth += 1;
+							System.out.println("\tDefence increased by 5!\n");
+							pointsLeftCount -= 1;
+							continue LEVELING;
+						}
+
+						if(userInput.equals("5")){
+							currPlayerPercep += 1;
+							System.out.println("\tPerception increased by 5!\n");
+							pointsLeftCount -= 1;
+							continue LEVELING;
+						}
+
 					}
 
 					System.out.println("\tJourney further up the mountain?");
@@ -448,6 +562,8 @@ public class dagonsMountain {
 			
 
 		}
+	}
+}
 	
 
 
