@@ -6,10 +6,9 @@ public class dagonsMountain {
 
 	//Game methods
 
-	//Assassin Abilities
 	public static int shockwave(int enemyHP){
 		System.out.println("\tYou channel a shockwave towards the enemy, hitting them for 50 damage.");
-		enemyHP -= 50;
+		enemyHP -= 30;
 		return enemyHP;
 	}
 
@@ -21,7 +20,7 @@ public class dagonsMountain {
 
 	public static int focusedBlast(int enemyHP){
 		System.out.println("\tYou channel a focused blast towards the enemy, hitting them for 100 damage.");
-		enemyHP -= 100;
+		enemyHP -= 200;
 		return enemyHP;
 	}
 
@@ -49,25 +48,21 @@ public class dagonsMountain {
 		return enemyHP;
 	}
 
-	/*public static int blend(int ){
+	public static int blend(int currPlayerEvade){
 		System.out.println("\tYou dissolve into the shadows surrounding you, increasing your evasion.");
-		return ;
-	}*/
+        currPlayerEvade = currPlayerEvade + 2;
+		return currPlayerEvade;
+	}
 
 	public static int crossSlice(int enemyHP){
 		System.out.println("\tYou leap high above the enemy, before coming hurtling down and ripping through them for 70 damage.");
-		enemyHP -= 70;
+		enemyHP -= 90;
 		return enemyHP;
 	}
 
 	public static int enemyBasicAtk(int playerHP, int playerDEF, int playerEVD, int enemyATK, String enemyName, String atkVerb, Random rand){
-		boolean ifDodge = false;
 		
 		if ((playerEVD / rand.nextInt(100)) > enemyATK){
-			ifDodge = true;
-		}
-
-		if (ifDodge == true){
 			System.out.println("\tYou dodged the " + enemyName + "'s attack!\n");
 			return playerHP;
 		}
@@ -87,7 +82,6 @@ public class dagonsMountain {
 			}
 			
 		}
-		
 	}
 
 	public static void main(String[] args) {
@@ -113,11 +107,11 @@ public class dagonsMountain {
 		String[] playerClass = {"Mage", "Warrior", "Assassin"};
 		String[] playerAttackVerbs = {"shock", "cleave", "rend"};
 		String[] mageAbilityNames = {"Shockwave", "Siphon", "Focused Blast"};
-		String[] mageAbilityDescriptions = {"(20 MP)(50 DMG) An electrical shockwave surges towards the enemy.", "(10 MP)(+20 HP) You connect to the enemy's spirit, siphoning health for yourself.", "(50 MP)(50 DMG) You charge up a blast of focused energy and send it flying towards the enemy."};
+		String[] mageAbilityDescriptions = {"(15 MP)(30 DMG) An electrical shockwave surges towards the enemy.", "(10 MP)(+20 HP) You connect to the enemy's spirit, siphoning health for yourself.", "(40 MP)(200 DMG) You charge up a blast of focused energy and send it flying towards the enemy."};
 		String[] warriorAbilityNames = {"Heavy Swing", "Shoulder Charge", "Rest"};
-		String[] warriorAbilityDescriptions = {"(-15 HP)(50 DMG) You strain under the might of your own swing, slashing the enemy with immense strength.", "(-30 HP)(150 DMG) You hurtle through the air towards the enemy, slamming into them with your armor-clad shoulder.", "(+20 HP) You take a moment to rest and recover from the strain of your body."};
+		String[] warriorAbilityDescriptions = {"(-5 HP)(50 DMG) You strain under the might of your own swing, slashing the enemy with immense strength.", "(-30 HP)(150 DMG) You hurtle through the air towards the enemy, slamming into them with your armor-clad shoulder.", "(+20 HP) You take a moment to rest and recover from the strain of your body."};
 		String[] assassinAbilityNames = {"Pinpoint Throw", "Blend", "Cross Slice"};
-		String[] assassinAbilityDescriptions = {"(15 MP)(x DMG) You throw your knife at the enemy with deadly precision.", "(x MP) Your eyes shift as you fade into your surroundings, increasing your evasion.", "(30 MP)(70 DMG) You bring both blades down towards your enemy, striking with ferocious speed."};
+		String[] assassinAbilityDescriptions = {"(15 MP)(30 DMG) You throw your knife at the enemy with deadly precision.", "(5 MP) Your eyes shift as you fade into your surroundings, increasing your evasion.", "(30 MP)(90 DMG) You bring both blades down towards your enemy, striking with ferocious speed."};
 		int[] playerHealth = {50, 100, 70};
 		int[] attackDamage = {10, 40, 25};
 		int[] playerMP = {150, 0, 60};
@@ -318,7 +312,7 @@ public class dagonsMountain {
 
 							if(abilityInput.equals("0")){
 								currEnemyHealth = shockwave(currEnemyHealth);
-								currPlayerMP -= 20;
+								currPlayerMP -= 15;
 								System.out.println();
 							}
 
@@ -331,7 +325,7 @@ public class dagonsMountain {
 							
 							else if(abilityInput.equals("2")){
 								currEnemyHealth = focusedBlast(currEnemyHealth);
-								currPlayerMP -= 50;
+								currPlayerMP -= 40;
 								System.out.println();
 							}
 
@@ -361,7 +355,7 @@ public class dagonsMountain {
 
 							if(abilityInput.equals("0")){
 								currEnemyHealth = heavySwing(currEnemyHealth);
-								currPlayerHealth -= 15;
+								currPlayerHealth -= 5;
 								System.out.println();
 							}
 
@@ -407,11 +401,11 @@ public class dagonsMountain {
 							}
 
 							else if(abilityInput.equals("1")){
-								System.out.println("Blend not yet implemented.");
+								System.out.println("You dissolve into the shadows around you, increasing your evasion by 2.");
 								continue BATTLE;
-								//currEnemyHealth = blend();
-								//currPlayerMP -= 15;
-								//System.out.println();
+								currPlayerEvade = blend(currPlayerEvade);
+								currPlayerMP -= 5;
+								System.out.println();
 							}
 							
 							else if(abilityInput.equals("2")){
@@ -428,13 +422,10 @@ public class dagonsMountain {
 							currPlayerHealth = enemyBasicAtk(currPlayerHealth, currPlayerDef, currPlayerEvade, currEnemyAttack, enemy, currEnemyVerb, rand);
 							System.out.println();
 						
+							}
 						}
 					}
 							
-
-						
-						
-					
 
 					if (userInput.equals("3")){
 						System.out.println("\tYou move swiftly, retreating from danger...");
@@ -445,13 +436,14 @@ public class dagonsMountain {
 					else if ((!userInput.equals("1")) && (!userInput.equals("2")) && (!userInput.equals("3"))){
 						System.out.println("\tYou ponder your next move, eyes glancing towards the " + enemy + " before you.\n");
 					}
-			}
+				}
+			
 
 				//Loss state
 				if (currPlayerHealth < 1) {
-					System.out.println("\tAs your stamina falters, the " + enemy + " sees it's opportunity and " + enemyAttackVerbs[setEnemy] + " you a final time, dealing a lethal blow.");
-					System.out.println("\tYou fall to your knees, the vast grey expanse of the roiling sky your final sight as your vision fades.");
-					System.out.println("\tYour mangled corpse has joined the many others littering the mountain.");
+					System.out.println("\tAs your stamina falters, the " + enemy + " sees it's opportunity and " + enemyAttackVerbs[setEnemy] + " you a final time, dealing a lethal blow.\n");
+					System.out.println("\tYou fall to your knees, the vast grey expanse of the roiling sky your final sight as your vision fades.\n");
+					System.out.println("\tYour mangled corpse has joined the many others littering the mountain.\n");
 					System.exit(0);
 				}
 
@@ -527,7 +519,7 @@ public class dagonsMountain {
 						}
 
 						if(userInput.equals("4")){
-							currPlayerHealth += 1;
+							currPlayerDef += 1;
 							System.out.println("\tDefence increased by 5!\n");
 							pointsLeftCount -= 1;
 							continue LEVELING;
@@ -539,6 +531,7 @@ public class dagonsMountain {
 							pointsLeftCount -= 1;
 							continue LEVELING;
 						}
+
 
 					}
 
@@ -563,7 +556,7 @@ public class dagonsMountain {
 
 		}
 	}
-}
+
 	
 
 
